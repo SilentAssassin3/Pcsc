@@ -6,6 +6,7 @@ public class PlayerController2 : MonoBehaviour
 {
     private Rigidbody2D myRB;
     public GameObject bullet;
+    Animator anim;
     public int health = 3;
     public int maxHealth = 5;
     public float bulletSpeed = 50;
@@ -27,6 +28,7 @@ public class PlayerController2 : MonoBehaviour
     void Start()
     {
         myRB = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
     }
     // Update is called once per frame
     void Update()
@@ -40,36 +42,12 @@ public class PlayerController2 : MonoBehaviour
             if (Input.GetKey(KeyCode.RightArrow))
             {
                 GameObject b = Instantiate(bullet, transform.position,Quaternion.identity);
-                Physics2D.IgnoreCollision(GetComponent<PolygonCollider2D>(),b.GetComponent<CapsuleCollider2D>());
-                b.GetComponent<Rigidbody2D>().rotation = 90;
+                Physics2D.IgnoreCollision(GetComponent<PolygonCollider2D>(),b.GetComponent<PolygonCollider2D>());
                 b.GetComponent<Rigidbody2D>().velocity = Vector2.right *bulletSpeed;
                 Destroy(b, bulletLifespan);
                 canShoot = false;
-            }
-            else if (Input.GetKey(KeyCode.LeftArrow))
-            {
-                GameObject b = Instantiate(bullet, transform.position,Quaternion.identity);
-                Physics2D.IgnoreCollision(GetComponent<PolygonCollider2D>(),b.GetComponent<CapsuleCollider2D>());
-                b.GetComponent<Rigidbody2D>().rotation = 90;
-                b.GetComponent<Rigidbody2D>().velocity = Vector2.left *bulletSpeed;
-                Destroy(b, bulletLifespan);
-                canShoot = false;
-            }
-            else if (Input.GetKey(KeyCode.UpArrow))
-            {
-                GameObject b = Instantiate(bullet, transform.position,Quaternion.identity);
-                Physics2D.IgnoreCollision(GetComponent<PolygonCollider2D>(),b.GetComponent<CapsuleCollider2D>());
-                b.GetComponent<Rigidbody2D>().velocity = Vector2.up * bulletSpeed;
-                Destroy(b, bulletLifespan);
-                canShoot = false;
-            }
-            else if (Input.GetKey(KeyCode.DownArrow))
-            {
-                GameObject b = Instantiate(bullet, transform.position,Quaternion.identity);
-                Physics2D.IgnoreCollision(GetComponent<PolygonCollider2D>(),b.GetComponent<CapsuleCollider2D>());
-                b.GetComponent<Rigidbody2D>().velocity = Vector2.down * bulletSpeed;
-                Destroy(b, bulletLifespan);
-                canShoot = false;
+                anim.SetTrigger("Shoot");
+            
             }
         }
         else if (!canShoot)
